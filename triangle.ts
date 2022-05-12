@@ -1,40 +1,47 @@
 export class Triangle {
-  sideA: number;
-  sideB: number;
-  sideC: number;
-  isEquilateral: boolean;
-  isIsosceles: boolean;
-  isScalene: boolean;
-  constructor(sideA: number, sideB: number, sideC: number) {
-    this.sideA = sideA;
-    this.sideB = sideB;
-    this.sideC = sideC;
-    if (sideA === sideB && sideB === sideC && sideA != 0) {
-      this.isEquilateral = true;
-    } else {
-      this.isEquilateral = false;
-    }
-    if (
-      (sideA === sideB || sideA === sideC || sideB === sideC) &&
-      sideA + sideB >= sideC &&
-      sideA + sideC >= sideB &&
-      sideB + sideC >= sideA
-    ) {
-      this.isIsosceles = true;
-    } else {
-      this.isIsosceles = false;
-    }
-    if (
-      sideA === sideB ||
-      sideB === sideC ||
-      sideA === sideC ||
-      sideA + sideB <= sideC ||
-      sideA + sideC <= sideB ||
-      sideB + sideC <= sideA
-    ) {
-      this.isScalene = false;
-    } else {
-      this.isScalene = true;
-    }
+  side1: number;
+  side2: number;
+  side3: number;
+
+  constructor(side1: number, side2: number, side3: number) {
+    this.side1 = side1;
+    this.side2 = side2;
+    this.side3 = side3;
+  }
+
+  private get isTriangle() {
+    return (
+      this.conformsToSideLaw &&
+      this.side1 > 0 &&
+      this.side2 > 0 &&
+      this.side3 > 0
+    );
+  }
+
+  private get conformsToSideLaw() {
+    return (
+      this.side1 + this.side2 >= this.side3 &&
+      this.side2 + this.side3 >= this.side1 &&
+      this.side3 + this.side1 >= this.side2
+    );
+  }
+
+  get isEquilateral() {
+    return (
+      this.isTriangle && this.side1 === this.side2 && this.side1 === this.side3
+    );
+  }
+
+  get isIsosceles() {
+    return (
+      this.isTriangle &&
+      (this.side2 === this.side3 ||
+        this.side1 === this.side2 ||
+        this.side1 === this.side3)
+    );
+  }
+
+  get isScalene() {
+    return this.isTriangle && !this.isIsosceles;
   }
 }
